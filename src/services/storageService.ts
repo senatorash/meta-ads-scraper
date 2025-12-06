@@ -1,5 +1,5 @@
-import fs from "fs/promises";
-import path from "path";
+import * as fs from "fs/promises";
+import * as path from "path";
 
 const DATA_DIR = path.resolve(process.cwd(), "data");
 
@@ -29,6 +29,7 @@ export const saveMeta = async (pageId: string, meta: any) => {
 export const loadMeta = async (pageId: string) => {
   const file = path.join(DATA_DIR, pageId, "meta.json");
   try {
+    return JSON.parse(await fs.readFile(file, "utf-8"));
   } catch (err) {
     return {};
   }

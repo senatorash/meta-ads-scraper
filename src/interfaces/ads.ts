@@ -3,13 +3,12 @@ export interface Ad {
   page_id: string;
   ad_text?: string;
   image_urls?: string[];
-  video_urls?: string[];
   is_active: boolean;
   start_date?: string | null;
   end_date?: string | null;
-  targeting?: any;
+  //   targeting?: any;
   raw: any;
-  last_updated?: string;
+  last_seen?: string;
 }
 
 export interface PageMeta {
