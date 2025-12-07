@@ -1,7 +1,7 @@
-import { parseGraphQLPayload } from "../../helpers/parser.js";
-import type { Ad, PageMeta } from "../../interfaces/ads.js";
-import { captureGraphQLResponses } from "../puppeteerService.js";
-import { saveAds, saveMeta } from "../storageService.js";
+import { parseGraphQLPayload } from "../../helpers/parser";
+import type { Ad, PageMeta } from "../../interfaces/ads";
+import { captureGraphQLResponses } from "../puppeteerService";
+import { saveAds, saveMeta } from "../storageService";
 
 const extractPageIdFromAds = (ads: Ad[]): string | null => {
   if (!ads || ads.length === 0 || !ads[0]) return null;

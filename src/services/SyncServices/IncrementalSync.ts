@@ -1,7 +1,7 @@
-import { parseGraphQLPayload } from "../../helpers/parser.js";
-import type { Ad, PageMeta } from "../../interfaces/ads.js";
-import { captureGraphQLResponses } from "../puppeteerService.js";
-import { loadAds, loadMeta, saveAds, saveMeta } from "../storageService.js";
+import { parseGraphQLPayload } from "../../helpers/parser";
+import type { Ad, PageMeta } from "../../interfaces/ads";
+import { captureGraphQLResponses } from "../puppeteerService";
+import { loadAds, loadMeta, saveAds, saveMeta } from "../storageService";
 
 export const incrementalSync = async (pageId: string) => {
   //   info("Starting incremental sync....", { pageId });
