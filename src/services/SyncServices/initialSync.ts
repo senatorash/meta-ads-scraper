@@ -40,7 +40,7 @@ export const initialSync = async (url: string, max?: number) => {
 
   const pageId = extractPageIdFromAds(ads);
   if (!pageId) {
-    error("Unable to extract page ID from parsed ads");
+    error("No ads found. Unable to extract page ID from parsed ads");
     return;
   }
 

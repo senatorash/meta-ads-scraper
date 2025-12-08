@@ -1,4 +1,5 @@
 import type { Ad } from "../interfaces/ads";
+import { warn } from "./logger";
 
 export const parseGraphQLPayload = (payLoad: any): Ad[] => {
   const ads: Ad[] = [];
@@ -7,7 +8,6 @@ export const parseGraphQLPayload = (payLoad: any): Ad[] => {
     // Navigate the payload structure to find ads data
     const adEdges =
       payLoad?.data?.ad_library_main?.search_results_connection?.edges ?? [];
-    console.log("Parsing payload with", adEdges.length, "ads");
 
     if (!Array.isArray(adEdges)) return ads;
 
@@ -21,7 +21,7 @@ export const parseGraphQLPayload = (payLoad: any): Ad[] => {
 
       const pageId = node?.page_id ?? null;
       const ad_text = node?.snapshot?.body?.text ?? null;
-      const image_urls = node?.snapshot?.cards[0]?.original_image_url;
+      const image_urls = node?.snapshot?.cards[0]?.original_image_url ?? null;
       const is_active = node?.is_active ?? false;
       const start_date = node?.start_date
         ? new Date(node.start_date * 1000).toISOString()
@@ -43,7 +43,7 @@ export const parseGraphQLPayload = (payLoad: any): Ad[] => {
       });
     }
   } catch (err: any) {
-    console.warn("Parser error:", err.message);
+    warn("Parser error:", err.message);
   }
   return ads;
 };

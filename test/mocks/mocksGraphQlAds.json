@@ -1,0 +1,36 @@
+{
+    "data": {
+        "ad_library_main": {
+            "search_results_connection": {
+    "edges":[
+        {
+            "node": {
+                "collated_results": [
+                    {
+                        "ad_id": "434343",
+                        "ad_archive_id": "1234567890",
+                        "collation_id": "2837461827364",
+                        "page_id": "0987654321",
+                        "snapshot": {
+                            "body": {
+                                "text": "This is a sample ad text for testing purposes."
+                            },
+                            "cards": [
+                                {
+                            "original_image_url": "https://example.com/image.jpg" 
+                        }
+                    ]
+                        },
+                        
+                        "is_active": true,
+                        "start_date": 48754878454,
+                        "end_date": 78084795884
+                    }
+                ]
+            }
+        }
+    ]
+}
+        }
+    }
+}
