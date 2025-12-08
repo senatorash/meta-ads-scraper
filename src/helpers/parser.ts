@@ -6,7 +6,8 @@ export const parseGraphQLPayload = (payLoad: any): Ad[] => {
   try {
     // Navigate the payload structure to find ads data
     const adEdges =
-      payLoad?.data?.ad_library_main?.search_results?.edges[0] ?? [];
+      payLoad?.data?.ad_library_main?.search_results_connection?.edges ?? [];
+    console.log("Parsing payload with", adEdges.length, "ads");
 
     if (!Array.isArray(adEdges)) return ads;
 

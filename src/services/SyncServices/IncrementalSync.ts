@@ -1,13 +1,15 @@
 import { parseGraphQLPayload } from "../../helpers/parser";
-import type { Ad, PageMeta } from "../../interfaces/ads";
+import type { Ad } from "../../interfaces/ads";
 import { captureGraphQLResponses } from "../puppeteerService";
 import { loadAds, loadMeta, saveAds, saveMeta } from "../storageService";
+import { info, error } from "../../helpers/logger";
 
 export const incrementalSync = async (pageId: string) => {
-  //   info("Starting incremental sync....", { pageId });
+  info("Starting incremental sync....", { pageId });
   const meta = await loadMeta(pageId);
   if (!meta?.source_url) {
-    throw new Error("meta.json missing or invalid");
+    error("meta.json missing or invalid");
+    return;
   }
 
   const existing = await loadAds(pageId);
@@ -19,6 +21,7 @@ export const incrementalSync = async (pageId: string) => {
 
   const updated: Ad[] = [];
 
+  //   callback to process each payload
   const onPayLoad = async (payload: any) => {
     const parsed = parseGraphQLPayload(payload);
     for (const ad of parsed) {
@@ -35,7 +38,7 @@ export const incrementalSync = async (pageId: string) => {
         map.set(ad.ad_id, merged);
         updated.push(merged);
       } else {
-        //
+        // already up-to-date... skip
       }
     }
   };
@@ -49,10 +52,10 @@ export const incrementalSync = async (pageId: string) => {
   meta.last_ad_count = final.length;
   await saveMeta(pageId, meta);
 
-  //   info("Incremental sync finished", {
-  //     pageId,
-  //     updated: updated.length,
-  //     total: final.length,
-  //   });
+  info("Incremental sync finished", {
+    pageId,
+    updated: updated.length,
+    total: final.length,
+  });
   return { pageId, updated: updated.length, total: final.length };
 };
