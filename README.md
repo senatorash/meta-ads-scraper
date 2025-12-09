@@ -101,7 +101,6 @@ meta-ads-scrapper/
 │   ├── parser.test.ts
 │   └── incrementalSync.test.ts
 │
-├── .env
 ├── .gitignore
 ├── jest.config.js
 ├── package.json
