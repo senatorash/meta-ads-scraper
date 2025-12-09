@@ -50,54 +50,65 @@ Fetches **only updated or newly created ads**.
 
 ### 🧪 3. Unit Tests
 
-Included tests verify:
+Included tests checks:
 
-#### ✔ Incremental sync correctness
+- Correct data structure.
+- All important fields are captured.
 
-- New ads detected correctly
-- Updated ads merged without corruption
-- No duplicates
-- Meta file updated correctly
-
-#### ✔ JSON integrity
-
-- `ads.json` and `meta.json` never malformed
-- No empty or corrupted JSON
-- Folder structure is always valid
+● Purpose: Facebook may change their GraphQL API, so tests help detect changes quickly so that we can release updates.
 
 ---
 
 # Project Structure
 
 ```
-meta-ads-scraper/
+meta-ads-scrapper/
+│
+├── (hidden) data/
+│   ├── page_id/
+│   │   └── ads.json
+│   │   └── meta.json
+│   └── (other generated files)
+│
+├── dist/                (hidden, generated)
+│   └── ... compiled JS files ...
+│
+├── node_modules/        (hidden)
 │
 ├── src/
-│   ├── scr/
-│   │    ├── browser/
-│   │    ├── sync/
-│   │    ├── parser/
-│   │    ├── fetchAds.ts
-│   │    └── initialSync.ts
-│   ├── db/
-│   │    ├── saveAd.ts
-│   │    ├── readAds.ts
-│   │    └── meta.ts
+│   ├── helpers/
+│   │   ├── logger.ts
+│   │   └── parser.ts
+│   │
 │   ├── interfaces/
-│   │    └── ads.ts
+│   │   └── ads.ts
+│   │
+│   ├── services/
+│   │   ├── SyncServices/
+│   │   │   ├── IncrementalSync.ts
+│   │   │   ├── initialSync.ts
+│   │   │   └── index.ts
+│   │   │
+│   │   ├── puppeteerService.ts
+│   │   └── storageService.ts
+│   │
 │   └── index.ts
 │
-├── database/
-│   └── {pageId}/ads.json
-│   └── {pageId}/meta.json
+├── test/
+│   ├── mocks/
+│   │   └── mocksGraphQlAds.json
+│   │
+│   ├── parser.test.ts
+│   └── incrementalSync.test.ts
 │
-├── tests/
-│   ├── incrementalSync.test.ts
-│   └── jsonIntegrity.test.ts
-│
-├── tsconfig.json
+├── .env
+├── .gitignore
+├── jest.config.js
 ├── package.json
-└── README.md
+├── package-lock.json
+├── README.md
+└── tsconfig.json
+
 ```
 
 ---
@@ -107,7 +118,7 @@ meta-ads-scraper/
 ### 1. Clone the repo
 
 ```sh
-git clone https://github.com/senatorash/meta-ads-scraper.git
+git clone https://github.com/senatorash/meta-ads-scraper
 cd meta-ads-scraper
 ```
 
@@ -138,8 +149,7 @@ npm run test
 Scrape all ads from any page:
 
 ````ts
-npm run dev -- initialSync "https://www.facebook.com/ads/library/?active_status=all&ad_type=all&country=ALL&view_all_page_id=282592881929497" 200
-
+npm run dev -- initialSync <url> [max]
 
 ---
 
@@ -148,7 +158,7 @@ npm run dev -- initialSync "https://www.facebook.com/ads/library/?active_status=
 Fetch new + updated ads without re-scraping everything:
 
 ```ts
-npm run dev -- incrementalSync "282592881929497"
+npm run dev -- incrementalSync <pageId>
 
 ````
 
@@ -253,16 +263,3 @@ npm run dev -- incrementalSync "282592881929497"
 ### ✔ API Change Detection
 
 If Meta modifies their GraphQL responses, tests will fail — alerting you to update the scraper.
-
-### ✔ No corrupted files
-
-Tests ensure JSON files are always valid, correctly structured, and non‑empty.
-
----
-
-# 🤝 Contributing
-
-Pull requests are welcome.  
-If you need help implementing additional features, feel free to ask!
-
----

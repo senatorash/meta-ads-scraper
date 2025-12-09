@@ -8,13 +8,13 @@ const main = async () => {
     const url = argv[3];
     const max = argv[4] ? parseInt(argv[4], 10) : undefined;
     if (!url) {
-      throw new Error("Usage: node dist/index.js initial <url> [max]");
+      throw new Error("Usage: npm run dev -- initialSync <url> [max]");
     }
     await initialSync(url, max);
   } else if (command === "incrementalSync") {
     const pageId = argv[3];
     if (!pageId) {
-      throw new Error("Usage: node dist/index.js incrementalSync <pageId>");
+      throw new Error("Usage: npm run dev -- incrementalSync <pageId>");
     }
     await incrementalSync(pageId);
   } else {
