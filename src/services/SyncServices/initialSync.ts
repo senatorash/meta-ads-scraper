@@ -38,12 +38,14 @@ export const initialSync = async (url: string, max?: number) => {
     ads.splice(max);
   }
 
+  // Extract page ID from ads
   const pageId = extractPageIdFromAds(ads);
   if (!pageId) {
     error("No ads found. Unable to extract page ID from parsed ads");
     return;
   }
 
+  // Save ads and meta data after sync
   await saveAds(pageId, ads);
 
   const meta: PageMeta = {

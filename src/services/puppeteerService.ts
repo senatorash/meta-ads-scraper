@@ -1,6 +1,7 @@
 import puppeteer, { Page } from "puppeteer";
 import { info, error, success } from "../helpers/logger";
 
+// creation and configuration of puppeteer browser instance
 export const createBrowser = async () => {
   const browser = await puppeteer.launch({
     headless: false,
@@ -9,6 +10,7 @@ export const createBrowser = async () => {
   return browser;
 };
 
+// capturing GraphQL responses from a page
 export const captureGraphQLResponses = async (
   url: string,
   onPayLoad: (payload: any) => Promise<"STOP" | void>,
@@ -20,6 +22,7 @@ export const captureGraphQLResponses = async (
 
   info("Opening page...", { url });
 
+  // Disable request interception so all network requests proceed normally
   await page.setRequestInterception(false);
 
   let stop = false;
@@ -56,7 +59,7 @@ export const captureGraphQLResponses = async (
   await page.goto(url, { waitUntil: "networkidle2" });
   info("Page loaded. Beginning capture...");
 
-  //   Auto-scroll to make Meta Ads Library load more ads
+  //   Auto-scrolling to make Meta Ads Library load more ads
   const start = Date.now();
   while (!stop && Date.now() - start < timeout) {
     await page.evaluate(() => {

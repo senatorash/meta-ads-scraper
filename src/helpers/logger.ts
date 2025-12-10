@@ -1,3 +1,4 @@
+// Simple logging helper functions
 export const info = (message: string, data?: any) => {
   console.log(`[INFO]`, message, data ?? "");
 };
